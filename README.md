@@ -90,3 +90,9 @@ GOOGLE_CLIENT_SECRET=
 ```
 
 Depois faça um novo deploy. O diretório `api/` contém somente `index.js`, portanto o deploy não ultrapassa o limite de funções do plano Hobby.
+
+## Rebrand Lar Decorado
+
+A identidade visual agora usa a logo `public/assets/logo-lar-decorado.jpeg`, com amarelo e preto inspirados na marca **Lar Decorado — Home & Decor**. O rodapé de todas as páginas mostra cards com ícone, título, descrição e URL configuráveis em **Admin → Redes sociais**.
+
+Também é possível cadastrar um link personalizado em cada produto pelo editor administrativo. O link aparece na página do produto com ícone, título e descrição.
