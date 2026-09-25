@@ -18,8 +18,10 @@ import mercadopagoWebhook from '../_api/mercadopago/webhook.js'
 import publicSettings from '../_api/settings/public.js'
 import shippingConfig from '../_api/shipping/config.js'
 import shippingQuote from '../_api/shipping/quote.js'
+import publicCatalog from '../_api/catalog/public.js'
 
 const routes = {
+  '/api/catalog/public': publicCatalog,
   '/api/admin/catalog': adminCatalog,
   '/api/admin/login': adminLogin,
   '/api/admin/logout': adminLogout,

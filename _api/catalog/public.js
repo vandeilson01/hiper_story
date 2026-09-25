@@ -1,0 +1,2 @@
+import { readSecure } from '../_secureStore.js'
+export default function handler(req,res){if(req.method!=='GET')return res.status(405).json({error:'Método não permitido'});const id=String(req.query?.id||'');if(!id)return res.status(400).json({error:'Produto não informado'});const data=readSecure('catalog-overrides',{products:[],deleted:[]});const product=(data.products||[]).find(x=>x.id===id);if(!product||((data.deleted||[]).includes(id)))return res.status(404).json({error:'Produto não encontrado'});return res.json({product})}
