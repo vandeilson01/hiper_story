@@ -70,3 +70,23 @@ npm run build
 ```
 
 > O armazenamento JSON criptografado funciona no desenvolvimento e em hospedagens com filesystem persistente. Em funções serverless sem disco persistente, troque a implementação de `api/_secureStore.js` por um banco/volume persistente antes do uso comercial.
+
+## Deploy na Vercel Hobby
+
+O projeto foi consolidado para usar **uma única Serverless Function** em `api/index.js`, evitando o limite de 12 funções do plano Hobby. Os handlers internos ficam em `_api/` e são roteados por `vercel.json`.
+
+Na Vercel, cadastre as variáveis em **Settings → Environment Variables**:
+
+```env
+ADMIN_EMAIL=admin@hiperstok.com.br
+ADMIN_PASSWORD=defina-uma-senha-forte
+ADMIN_SESSION_SECRET=gere-uma-chave-longa
+DATA_ENCRYPTION_KEY=gere-outra-chave-longa-diferente
+PUBLIC_APP_URL=https://seu-projeto.vercel.app
+MERCADOPAGO_ACCESS_TOKEN=
+MERCADOPAGO_PUBLIC_KEY=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+Depois faça um novo deploy. O diretório `api/` contém somente `index.js`, portanto o deploy não ultrapassa o limite de funções do plano Hobby.

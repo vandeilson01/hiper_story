@@ -1,6 +1,3 @@
-import fs from 'node:fs'
-import path from 'node:path'
-
 export function apiPlugin() {
   return {
     name: 'hiper-local-api',
@@ -9,8 +6,6 @@ export function apiPlugin() {
         if (!req.url?.startsWith('/api/')) return next()
         try {
           const parsed = new URL(req.url, 'http://localhost')
-          const file = path.join(process.cwd(), parsed.pathname.replace(/^\//, '') + '.js')
-          if (!fs.existsSync(file)) return next()
           if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH' || req.method === 'DELETE') {
             const chunks=[]
             for await (const chunk of req) chunks.push(chunk)
@@ -20,8 +15,9 @@ export function apiPlugin() {
           req.query=Object.fromEntries(parsed.searchParams.entries())
           res.status = code => { res.statusCode=code; return res }
           res.json = value => { if (!res.headersSent) res.setHeader('Content-Type','application/json'); res.end(JSON.stringify(value)) }
+          res.send = value => { if (!res.headersSent) res.setHeader('Content-Type','text/plain; charset=utf-8'); res.end(String(value)) }
           res.redirect = url => { res.statusCode=302; res.setHeader('Location',url); res.end() }
-          const mod=await server.ssrLoadModule('/'+path.relative(process.cwd(),file).replaceAll('\\','/'))
+          const mod=await server.ssrLoadModule('/api/index.js')
           await mod.default(req,res)
         } catch (error) {
           console.error('[api]', req.url, error)
