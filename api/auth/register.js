@@ -1,0 +1,4 @@
+import crypto from 'node:crypto'
+import { readSecure, writeSecure, setSession } from '../_secureStore.js'
+const hash = value => crypto.scryptSync(value, process.env.DATA_ENCRYPTION_KEY || 'local-salt', 32).toString('hex')
+export default function handler(req,res){ if(req.method!=='POST') return res.status(405).json({error:'Método não permitido'}); const {email,password,name=''}=req.body||{}; if(!email||!password||password.length<8)return res.status(400).json({error:'Informe nome, e-mail e uma senha de pelo menos 8 caracteres.'}); const users=readSecure('users',[]); if(users.some(x=>x.email===email.toLowerCase()))return res.status(409).json({error:'Este e-mail já está cadastrado.'}); users.push({id:crypto.randomUUID(),email:email.toLowerCase(),name,passwordHash:hash(password),createdAt:new Date().toISOString(),provider:'password'}); writeSecure('users',users); setSession(res,email.toLowerCase()); return res.status(201).json({authenticated:true,email}) }

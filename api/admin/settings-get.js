@@ -1,0 +1,2 @@
+import { cookie, validSession, readSecure } from '../_secureStore.js'
+export default function handler(req,res){const session=validSession(cookie(req,'hiper_session'));if(!session||session.email!==process.env.ADMIN_EMAIL)return res.status(401).json({error:'Não autenticado'});const s=readSecure('settings',{});res.json({mercadopagoConfigured:Boolean(s.mercadopagoToken),socialConfigured:Boolean(s.instagram||s.facebook)})}

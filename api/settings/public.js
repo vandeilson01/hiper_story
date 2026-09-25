@@ -1,0 +1,2 @@
+import { readSecure } from '../_secureStore.js'
+export default function handler(req,res){const s=readSecure('settings',{});res.setHeader('Cache-Control','no-store');res.json({instagram:s.instagram||'https://instagram.com/hiperstok',facebook:s.facebook||'https://facebook.com/hiperstok',tiktok:s.tiktok||'https://tiktok.com/@hiperstok',whatsapp:s.whatsapp||'https://wa.me/5511990019573',shippingEnabled:s.shippingEnabled!==false})}

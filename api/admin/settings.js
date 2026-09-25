@@ -1,0 +1,2 @@
+import { cookie, validSession, readSecure, writeSecure } from '../_secureStore.js'
+export default function handler(req,res){const session=validSession(cookie(req,'hiper_session'));if(!session||session.email!==process.env.ADMIN_EMAIL)return res.status(401).json({error:'Não autenticado'});if(req.method!=='POST')return res.status(405).json({error:'Método não permitido'});const old=readSecure('settings',{});const body=req.body||{};writeSecure('settings',{...old,...body,updatedAt:new Date().toISOString()});return res.json({saved:true})}
